@@ -8,7 +8,7 @@
         @click-right="onClickRight"
         fixed
       >
-        <template #title>购物车({{CartList.length}})</template>
+        <template #title>{{$route.meta.title}}({{CartList.length}})</template>
       </van-nav-bar>
       <div class="hidder"></div>
       <van-row type="flex" align="center" v-for="(item,index) in CartList" :key="index">
@@ -39,7 +39,12 @@
         fixed
       />
       <div class="hidder"></div>
-      <van-row type="flex" align="center" v-for="(item,index) in $store.state.CartList" :key="index">
+      <van-row
+        type="flex"
+        align="center"
+        v-for="(item,index) in $store.state.CartList"
+        :key="index"
+      >
         <van-col span="2">
           <van-checkbox v-model="item.ischecked" @click="onChange(item)"></van-checkbox>
         </van-col>
@@ -67,6 +72,9 @@
 <script>
 import { patchpathCartChecked, patchCartNum } from "../../api/api";
 export default {
+  metaInfo: {
+    title: "购物车",
+  },
   data() {
     return {
       result: [],
@@ -86,7 +94,7 @@ export default {
   },
   created() {
     this.$store.dispatch("setCartList");
-    console.log(this.CartList);
+    // console.log(this.CartList);
   },
   methods: {
     onClickLeft() {
@@ -108,7 +116,7 @@ export default {
       this.$store.dispatch("settotle");
     },
     onChange(item) {
-      console.log(item.cart_id);
+      // console.log(item.cart_id);
       // patchpathCartChecked({ catId: item.cart_id }).then((res) => {
       //   console.log(res);
       // });
@@ -120,8 +128,8 @@ export default {
       this.$store.dispatch("setCartList");
     },
     setnum(value, detail) {
-      console.log(typeof value);
-      console.log(typeof detail.name);
+      // console.log(typeof value);
+      // console.log(typeof detail.name);
       patchCartNum({ catId: detail.name, product_amount: value }).then(
         (res) => {
           console.log(res);

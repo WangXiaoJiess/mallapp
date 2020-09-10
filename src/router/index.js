@@ -23,7 +23,7 @@ const routes = [
         path: '/category',
         name: 'Category',
         component: () => import('@/views/category/Category'),
-        meta: { title: '分类', keepAlive: false, isshow: true }
+        meta: { title: '商品分类', keepAlive: false, isshow: true }
       },
       {
         path: '/cart',
@@ -99,6 +99,18 @@ const routes = [
     name: 'PayOrder',
     component: () => import('@/views/cart/PayOrder'),
     meta: { title: '确定订单', keepAlive: false }
+  },
+  {
+    path: '/payOrderIsOK',
+    name: 'PayOrderIsOK',
+    component: () => import('@/views/cart/PayOrderIsOK'),
+    meta: { title: '支付成功', keepAlive: false }
+  },
+  {
+    path: '/order',
+    name: 'Order',
+    component: () => import('@/views/order/Order'),
+    meta: { title: '我的订单', keepAlive: false }
   },
 ]
 

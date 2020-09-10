@@ -117,6 +117,9 @@ import {
 } from "../../api/api";
 import CartList from "../../components/CartList";
 export default {
+  metaInfo: {
+    title: "详情",
+  },
   data() {
     return {
       active: "0",
@@ -185,6 +188,8 @@ export default {
       }).then((res) => {
         console.log(res);
       })
+
+      this.$store.dispatch("setCartList");
     },
   },
   filters: {

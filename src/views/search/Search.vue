@@ -66,6 +66,9 @@
 import { getSearchHot, getGoods } from "../../api/api";
 import CartList from "../../components/CartList";
 export default {
+  metaInfo: {
+    title: "搜索",
+  },
   data() {
     return {
       allindex: 0,

@@ -1,12 +1,14 @@
 <template>
   <div>
-    <van-nav-bar title="修改收货地址" left-arrow @click-left="onClickLeft" />
+    <van-nav-bar :title="$route.meta.title" left-arrow @click-left="onClickLeft" />
     <van-address-edit
       :show-detail="false"
       :show-area="false"
       show-set-default
       :address-info="ressList"
       @save="onSave"
+      show-delete
+      @delete="ondelete"
     >
       <template #default>
         <div class="default">
@@ -31,9 +33,13 @@
 </template>
 
 <script>
+import { Notify } from 'vant';
 import List from "../../../public/san.js";
-import { patchaddArea, postaddArea } from "../../api/api";
+import { patchaddArea, postaddArea, patchdeleteArea } from "../../api/api";
 export default {
+  metaInfo: {
+    title: "修改收货地址",
+  },
   data() {
     return {
       address: "",
@@ -57,7 +63,6 @@ export default {
   },
   methods: {
     onSave(content) {
-      //   console.log(content);
       patchaddArea({
         CustomerAddrId: content.customerAddrId,
         CustomerId: content.customerId,
@@ -92,6 +97,23 @@ export default {
     },
     onClickLeft() {
       this.$router.push("/ship");
+    },
+    //  删除订单
+    ondelete() {
+      // console.log(this.$route.query.item);
+      let item = this.$route.query.item;
+      console.log(item);
+      patchdeleteArea({
+        userid: item.customerId,
+        areaId: item.id,
+      }).then((res) => {
+        console.log(res);
+        if(res.code == 201){
+          this.$router.push('/ship')
+        }else{
+          Notify({ type: 'danger', message: res.msg });
+        }
+      });
     },
   },
 };

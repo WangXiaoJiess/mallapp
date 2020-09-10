@@ -1,6 +1,6 @@
 <template>
   <div>
-    <van-nav-bar title="设置" left-arrow @click-left="onClickLeft" />
+    <van-nav-bar :title="$route.meta.title" left-arrow @click-left="onClickLeft" />
     <van-button class="van-button" type="default" @click="onClick" block>切换账号</van-button>
     <van-button class="van-button" type="default" block>注销登录</van-button>
   </div>
@@ -10,6 +10,9 @@
 import { Dialog } from "vant";
 import { mapMutations } from "vuex";
 export default {
+  metaInfo: {
+    title: "设置",
+  },
   methods: {
     ...mapMutations({
       setToken: "setToken"

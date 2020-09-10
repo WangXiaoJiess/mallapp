@@ -1,6 +1,6 @@
 <template>
   <div>
-    <van-nav-bar title="确认订单" fixed left-arrow @click-left="onClickLeft" />
+    <van-nav-bar :title="$route.meta.title" fixed left-arrow @click-left="onClickLeft" />
     <div class="hidder"></div>
     <div class="areaList" v-for="(item,index) in areaList" :key="index" v-show="index == allindex">
       <div class="areaList_left">
@@ -75,8 +75,12 @@
 </template>
 
 <script>
-import { getOrderInfo, getArea } from "../../api/api";
+import { getOrderInfo, getArea, postcretaeOrder } from "../../api/api";
+import { mapMutations } from "vuex";
 export default {
+  metaInfo: {
+    title: "确认订单",
+  },
   data() {
     return {
       buyList: [],
@@ -124,13 +128,52 @@ export default {
     }
   },
   methods: {
+    ...mapMutations({
+      setOrderList: "setOrderList",
+    }),
     onClickLeft() {
       this.$router.push({
         path: "/cart",
       });
     },
     onSubmit() {
-      this.$router.push('/payOrder')
+      let consignee = this.areaList[this.allindex];
+      let addr = [
+        consignee.name,
+        consignee.phone,
+        consignee.province,
+        consignee.city,
+        consignee.district,
+        consignee.address,
+      ];
+      var addrstr = addr.join(",");
+      let id = [];
+      this.buyGoods.forEach((element) => {
+        id.push(element[0].goodsId);
+      });
+      let strid = id.join(" ");
+      let num = 0;
+      this.buyList.forEach((element) => {
+        num += element.product_amount;
+      });
+      // console.log(this.totel)
+      // console.log(addrstr)
+      // console.log(strid);
+      postcretaeOrder({
+        price: this.totel / 100,
+        consignee_addr: addrstr,
+        goodsId: strid,
+        isFcart: true,
+      }).then((res) => {
+        console.log(res);
+        this.setOrderList(res.data);
+        this.$router.push({
+          path: "/payOrder",
+          query: {
+            order:res.data
+          },
+        });
+      });
     },
     goto() {
       this.$router.push("/selectArea");

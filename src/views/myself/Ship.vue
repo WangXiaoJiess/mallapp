@@ -1,7 +1,7 @@
 <template>
   <div>
     <van-nav-bar
-      title="我的收货地址"
+      :title="$route.meta.title"
       right-text="新增"
       left-arrow
       @click-left="onClickLeft"
@@ -34,6 +34,9 @@
 import { Toast } from "vant";
 import { getArea } from "../../api/api";
 export default {
+  metaInfo: {
+    title: "我的收货地址",
+  },
   data() {
     return {
       areaList: [],

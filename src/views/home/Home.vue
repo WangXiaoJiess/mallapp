@@ -53,6 +53,9 @@ import { Toast } from "vant";
 import { getHomeList, getShowGoods } from "../../api/api";
 import CartList from "../../components/CartList";
 export default {
+  metaInfo: {
+    title: "首页",
+  },
   data() {
     return {
       HomeList: [],
@@ -82,7 +85,7 @@ export default {
   components: {
     CartList,
   },
-  mounted() {
+  created() {
     getHomeList()
       .then((res) => {
         // console.log(res.data);

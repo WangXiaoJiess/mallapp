@@ -1,7 +1,7 @@
 <template>
   <div>
     <van-sticky>
-      <van-nav-bar title="商品分类" />
+      <van-nav-bar :title="$route.meta.title" />
       <van-search @focus="goto('/search')" class="search" placeholder="请输入需要搜索的商品" />
     </van-sticky>
     <van-row>
@@ -35,7 +35,7 @@
           >
             <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
               <div class="category_List">
-                <CartList v-for="(item,index) in TwoList" :key="index" :ListItem="item" />
+                <CartList v-for="(item,index) in TwoList" :key="index" :ListItem="item" @onClick="onClick" />
               </div>
             </van-pull-refresh>
           </van-list>
@@ -50,6 +50,9 @@ import { Toast } from "vant";
 import { getCatsTree, getCadGoods } from "../../api/api";
 import CartList from "../../components/CartList";
 export default {
+  metaInfo: {
+    title: "分类",
+  },
   data() {
     return {
       activeKey: 0,
@@ -114,6 +117,15 @@ export default {
       if (this.TwoList.length >= 40) {
         this.finished = true;
       }
+    },
+    onClick(item) {
+      // console.log(item)
+      this.$router.push({
+        path: "/detail",
+        query: {
+          id:item.goodsId
+        },
+      });
     },
   },
   mounted() {

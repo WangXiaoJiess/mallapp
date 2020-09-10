@@ -7,7 +7,8 @@ import {
     Sidebar, SidebarItem, Tab, Tabs ,Notify ,
     Grid, GridItem,GoodsAction, GoodsActionIcon, GoodsActionButton,
     SubmitBar ,Checkbox ,Card ,CheckboxGroup,Stepper ,
-    AddressEdit ,Area , Dialog ,AddressList 
+    AddressEdit ,Area , Dialog ,AddressList ,
+    RadioGroup, Radio,PasswordInput, NumberKeyboard
 
 } from 'vant'
 Vue.use(Button)
@@ -46,3 +47,7 @@ Vue.use(AddressEdit);
 Vue.use(Area);
 Vue.use(Dialog);
 Vue.use(AddressList);
+Vue.use(Radio);
+Vue.use(RadioGroup);
+Vue.use(PasswordInput);
+Vue.use(NumberKeyboard);

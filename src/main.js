@@ -4,6 +4,11 @@ import router from './router'
 import store from './store'
 import 'lib-flexible/flexible';
 import '@/plugins/vant'
+import VueMeta from 'vue-meta'
+Vue.use(VueMeta, {
+
+  refreshOnceOnNavigation: true
+})
 
 Vue.config.productionTip = false
 

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <van-nav-bar title="新增收货地址" left-arrow @click-left="onClickLeft" />
+    <van-nav-bar :title="$route.meta.title" left-arrow @click-left="onClickLeft" />
     <van-address-edit
       :area-list="areaList"
       show-set-default
@@ -17,6 +17,9 @@ import { Toast, Dialog } from "vant";
 import List from "../../../public/san.js";
 import { postaddArea } from "../../api/api";
 export default {
+  metaInfo: {
+    title: "新增收货地址",
+  },
   data() {
     return {
       areaList: [],

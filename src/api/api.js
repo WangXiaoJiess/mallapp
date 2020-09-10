@@ -1,13 +1,11 @@
 import {
-  homeList, ShowGoods, SearchHot,
-  Goods, CatsTree, CadGoods, GoodsInfo,
-  Phone, LoginName, Code, login, Login,
-  UserData, Cart, addCart, DeleteCart,
-  CartNum, pathCartChecked,OrderInfo,
-  addArea,Area,patchArea,
+  homeList, ShowGoods, SearchHot,Goods, CatsTree, CadGoods, GoodsInfo,Phone, LoginName, Code, login, Login,UserData, Cart, addCart, DeleteCart,
+  CartNum, pathCartChecked, OrderInfo,addArea, Area, patchArea, cretaeOrder,verifyPayPWD, payOrder, appWebPay, OrderByState,deleteArea,
+  
 } from './index'
 // axios
 import request from '../utils/reques'
+import qs from 'qs'
 
 // 获取首页数据
 export function getHomeList(params = {}) {
@@ -105,7 +103,7 @@ export function postlogin(params = {}) {
   return request({
     url: login,
     method: 'post',
-    params,
+    data: qs.stringify(params),
     hideloading: false
   })
 }
@@ -114,7 +112,7 @@ export function postLogin(params = {}) {
   return request({
     url: Login,
     method: 'post',
-    params,
+    data: qs.stringify(params),
     hideloading: false
   })
 }
@@ -143,7 +141,7 @@ export function postaddCart(params = {}) {
   return request({
     url: addCart,
     method: 'post',
-    params,
+    data: qs.stringify(params),
     hideloading: false
   })
 }
@@ -188,7 +186,7 @@ export function postaddArea(params = {}) {
   return request({
     url: addArea,
     method: 'post',
-    params,
+    data: qs.stringify(params),
     hideloading: false
   })
 }
@@ -206,6 +204,64 @@ export function getArea(params = {}) {
 export function patchaddArea(params = {}) {
   return request({
     url: patchArea,
+    method: 'patch',
+    params,
+    hideloading: false
+  })
+}
+
+// 创建订单 点击确定付款 但未完成付款操作
+export function postcretaeOrder(params = {}) {
+  return request({
+    url: cretaeOrder,
+    method: 'post',
+    data: qs.stringify(params),
+    hideloading: false
+  })
+}
+
+// 创建订单 点击确定付款 但未完成付款操作
+export function postverifyPayPWD(params = {}) {
+  return request({
+    url: verifyPayPWD,
+    method: 'post',
+    data: qs.stringify(params),
+    hideloading: false
+  })
+}
+// 进行订单的支付 （余额）
+export function postpayOrder(params = {}) {
+  return request({
+    url: payOrder,
+    method: 'post',
+    data: qs.stringify(params),
+    hideloading: false
+  })
+}
+
+// 手机网页支付
+export function postappWebPay(params = {}) {
+  return request({
+    url: appWebPay,
+    method: 'post',
+    data: qs.stringify(params),
+    hideloading: false
+  })
+}
+// 展示订单信息，包含商品信息和店铺信息
+export function getOrderByState(params = {}) {
+  return request({
+    url: OrderByState,
+    method: 'get',
+    params,
+    hideloading: false
+  })
+}
+
+// 修改用户地址为删除状态
+export function patchdeleteArea(params = {}) {
+  return request({
+    url: deleteArea,
     method: 'patch',
     params,
     hideloading: false

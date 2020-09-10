@@ -1,7 +1,7 @@
 <template>
   <div>
     <van-nav-bar
-      title="更换收货地址"
+      :title="$route.meta.title"
       right-text="新增"
       left-arrow
       @click-left="onClickLeft"
@@ -23,6 +23,9 @@
 <script>
 import { getArea } from "../../api/api";
 export default {
+  metaInfo: {
+    title: "更换收货地址",
+  },
   data() {
     return {
       chosenAddressId: "1",

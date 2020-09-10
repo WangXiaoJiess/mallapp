@@ -15,7 +15,7 @@
         <div></div>
         <div></div>
         <div>
-          <div class="sign">签到领积分</div>
+          <div class="sign" @click="onsign">{{sign[signindex]}}</div>
         </div>
       </div>
 
@@ -44,7 +44,7 @@
     <div class="bottom_List">
       <div class="List_title">
         <h1 style="font-size:24px">我的订单</h1>
-        <span style="font-size:12px;color: #646566;">查看全部订单 ></span>
+        <span style="font-size:12px;color: #646566;" @click="goto('/order')">查看全部订单 ></span>
       </div>
       <van-grid>
         <van-grid-item
@@ -87,14 +87,18 @@
 <script>
 import { getUserData } from "../../api/api";
 export default {
+  metaInfo: {
+    title: "我的",
+  },
   data() {
     return {
       user: [],
+      sign: ["签到领积分", "已签到"],
       userList: [
         {
           icon: require("../../assets/icon/shouhuodizhi.png"),
           title: "收货地址",
-          path:"/ship"
+          path: "/ship",
         },
         {
           icon: require("../../assets/icon/shoucang.png"),
@@ -114,6 +118,7 @@ export default {
         {
           icon: require("../../assets/icon/quanbu.png"),
           title: "全部",
+          path: "/order",
         },
         {
           icon: require("../../assets/icon/daizhifu.png"),
@@ -131,6 +136,11 @@ export default {
       ],
     };
   },
+  computed: {
+    signindex: function () {
+      return this.$store.state.signindex;
+    },
+  },
   mounted() {
     getUserData({ token: this.$store.state.token }).then((res) => {
       // console.log(res.data);
@@ -140,6 +150,14 @@ export default {
         this.user = res.data;
       }
     });
+  },
+  methods: {
+    goto(path) {
+      this.$router.push(path);
+    },
+    onsign() {
+      this.$store.dispatch("setsignindex", 1);
+    },
   },
 };
 </script>

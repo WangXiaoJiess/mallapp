@@ -21,6 +21,12 @@ const api = {
     addArea: '/api/UserInfo/addArea', // 添加用户的收货地址
     Area: '/api/UserInfo/getArea', // 获取用户的收货地址
     patchArea: '/api/UserInfo/patchArea', // 修改用户的收货地址
+    cretaeOrder: '/api/Order/cretaeOrder', // 创建订单 点击确定付款 但未完成付款操作
+    verifyPayPWD: '/api/Order/verifyPayPWD', // 验证支付密码
+    payOrder: '/api/Order/payOrder', // 进行订单的支付 （余额）
+    appWebPay: '/api/Alipay/appWebPay', // 手机网页支付
+    OrderByState: '/api/Order/getOrderByState', // 展示订单信息，包含商品信息和店铺信息
+    deleteArea: '/api/UserInfo/deleteArea', // 修改用户地址为删除状态
 }
 
 module.exports = api 

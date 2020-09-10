@@ -11,21 +11,29 @@ export default new Vuex.Store({
   })],
   state: {
     token: "",
-    path: '',
-    CartList: [],
-    totle: 0,
-    checked: false,
-    id: 0
+    path: '', // 路由对象
+    CartList: [],  // 购物车列表
+    totle: 0, // 购物车总价
+    checked: false,  // 购物车全选按钮
+    id: 0,
+    OrderList: [], // 订单列表
+    signindex: 0, // 我的页面  签到
   },
   mutations: {
     setToken(state, val) {
       state.token = val;
+    },
+    setsignindex(state, newsignindex) {
+      state.signindex = newsignindex
     },
     setpath(state, newpath) {
       state.path = newpath
     },
     setid(state, newid) {
       state.id = newid
+    },
+    setOrderList(state, newOrderList) {
+      state.OrderList = newOrderList
     },
     setCartList(state) {
       getCart({ pageSize: '30' }).then((res) => {
@@ -35,8 +43,7 @@ export default new Vuex.Store({
         state.totle = 0
         state.CartList.forEach(element => {
           if (element.ischecked == true) {
-            state.checked = true
-            state.totle += element.price * element.product_amount * 100
+            element.ischecked = false
           }
         })
       });
@@ -57,9 +64,7 @@ export default new Vuex.Store({
           a.push(element.cart_id)
         }
       })
-      // console.log(a)
       var str = a.join(',')
-      // console.log(str)
       patchDeleteCart({ carid: str }).then(res => {
         console.log(res)
       })
@@ -78,6 +83,7 @@ export default new Vuex.Store({
       });
     },
     setchecked(state) {
+      state.checked = !state.checked
       state.CartList.forEach((element) => {
         element.ischecked = state.checked;
       });
@@ -110,6 +116,9 @@ export default new Vuex.Store({
     },
     setid(context, newid) {
       context.commit('setid', newid)
+    },
+    setsignindex(context, newsignindex) {
+      context.commit("setsignindex", newsignindex)
     }
   },
   modules: {

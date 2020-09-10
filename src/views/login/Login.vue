@@ -69,6 +69,9 @@ import {
 } from "../../api/api";
 import store from "../../store/index";
 export default {
+  metaInfo: {
+    title: "登录",
+  },
   data() {
     return {
       value: 0,
