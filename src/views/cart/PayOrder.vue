@@ -4,6 +4,11 @@
     <div class="hidder"></div>
 
     <div class="money">￥{{totle}}元</div>
+    <div
+      style="text-align:center;font-size:14px;color:gray;margin:10px 0px;"
+      v-for="(item,index) in  order"
+      :key="index"
+    >订单编号：{{item.orderNumber}}</div>
 
     <div class="order_item" v-for="(item,index) in List" :key="index">
       <div class="item_title">
@@ -41,6 +46,7 @@ export default {
   },
   data() {
     return {
+      order: [],
       radio: 2,
       value: "",
       showKeyboard: false,
@@ -64,9 +70,11 @@ export default {
       ],
     };
   },
-  computed: {},
   created() {
-    console.log(this.$route.query.order[0].orderNumber);
+    console.log(this.$route.query.order);
+    if (this.$route.query.order) {
+      this.order = this.$route.query.order;
+    }
     this.totle = this.$store.state.totle / 100;
   },
   watch: {
@@ -123,15 +131,11 @@ export default {
         }).then((res) => {
           console.log(res);
           if (res.code == 201) {
-            // this.$router.push({
-            //   path: "payOrderIsOK",
-            // });
-            var html = res.data
+            var html = res.data;
             const div = document.createElement("div");
-            div.innerHTML = html
-            document.body.appendChild(div)
-            document.forms[0].submit()
-
+            div.innerHTML = html;
+            document.body.appendChild(div);
+            document.forms[0].submit();
           } else if (res.code == 404) {
             Notify(res.msg);
           }

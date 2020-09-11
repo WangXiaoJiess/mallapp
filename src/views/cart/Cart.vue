@@ -101,7 +101,7 @@ export default {
       if (this.$store.state.path == "/buyGoods") {
         this.$router.push("/home");
       }
-      this.$router.push(this.$store.state.path);
+      window.history.back()
     },
     onClickRight() {
       this.isshow = !this.isshow;

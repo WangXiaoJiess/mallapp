@@ -38,6 +38,7 @@ export default {
   mounted() {
     getOrderByState({
       orderState: "9",
+      page:"1",
       pageSize: "50",
     }).then((res) => {
       console.log(res.data);

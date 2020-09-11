@@ -1,9 +1,11 @@
 <template>
   <div>
+    <!-- 吸顶效果 -->
     <van-sticky>
       <img width="100%" src="../../assets/logo.png" alt />
       <van-search @focus="goto('/search')" class="search" placeholder="请输入需要搜索的商品" />
     </van-sticky>
+    <!-- 下拉刷新 -->
     <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
       <div>
         <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white">
@@ -18,7 +20,8 @@
           <div>{{item.sp_home_title}}</div>
         </div>
       </div>
-      <van-sticky :offset-top="90">
+      <!-- 吸顶效果 -->
+      <van-sticky :offset-top="93">
         <div class="Home_title">
           <div
             @click="oneClick(item,index)"
@@ -28,6 +31,7 @@
           >{{item.title}}</div>
         </div>
       </van-sticky>
+      <!-- 上拉加载 -->
       <van-list
         v-model="loading"
         :finished="finished"
@@ -35,6 +39,7 @@
         offset="0"
         @load="onLoad"
       >
+      <!-- 商品组件 -->
         <div class="Home_List">
           <CartList
             v-for="(item,index) in ShowGoods"
@@ -49,8 +54,11 @@
 </template>
 
 <script>
+// 引入vant组件
 import { Toast } from "vant";
+// 引入axios接口
 import { getHomeList, getShowGoods } from "../../api/api";
+// 引入商品组件
 import CartList from "../../components/CartList";
 export default {
   metaInfo: {
@@ -82,9 +90,11 @@ export default {
       sort: "syn",
     };
   },
+  // 组件注册
   components: {
     CartList,
   },
+  // 初始化
   created() {
     getHomeList()
       .then((res) => {
@@ -96,6 +106,7 @@ export default {
       });
   },
   methods: {
+    // 商品头部点击事件
     oneClick(item, index) {
       this.allindex = index;
       this.sort = item.sort;
@@ -109,6 +120,7 @@ export default {
           console.log(error);
         });
     },
+    // 下拉刷新
     onRefresh() {
       setTimeout(() => {
         getShowGoods({ page: 1, sortType: "syn" })
@@ -125,6 +137,7 @@ export default {
         Toast("刷新成功");
       }, 1000);
     },
+    // 上拉加载
     onLoad() {
       getShowGoods({ page: this.page, sortType: this.sort })
         .then((res) => {
@@ -136,20 +149,22 @@ export default {
         .catch((error) => {
           console.log(error);
         });
-
+      // 加载数据不能大于40条
       if (this.ShowGoods.length >= 40) {
         this.finished = true;
       }
     },
+    // 跳转到搜索路由
     goto(path) {
       this.$router.push(path);
     },
+    // 跳转到详情路由
     onClick(item) {
       // console.log(item)
       this.$router.push({
         path: "/detail",
         query: {
-          id:item.goodsId
+          id: item.goodsId,
         },
       });
     },

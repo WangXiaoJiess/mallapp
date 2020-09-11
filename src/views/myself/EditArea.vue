@@ -1,6 +1,8 @@
 <template>
   <div>
+    <!-- 头部 -->
     <van-nav-bar :title="$route.meta.title" left-arrow @click-left="onClickLeft" />
+    <!-- 修改页面 -->
     <van-address-edit
       :show-detail="false"
       :show-area="false"
@@ -33,8 +35,11 @@
 </template>
 
 <script>
+// 引入vant组件
 import { Notify } from 'vant';
+// 引入地址数据
 import List from "../../../public/san.js";
+// 引入axios接口
 import { patchaddArea, postaddArea, patchdeleteArea } from "../../api/api";
 export default {
   metaInfo: {
@@ -52,6 +57,7 @@ export default {
     };
   },
   created() {
+    // 获取页面数据
     console.log(this.$route.query.item);
     let item = this.$route.query.item;
     this.areaList = List;
@@ -62,7 +68,9 @@ export default {
     this.xian = item.district;
   },
   methods: {
+    // 保存事件
     onSave(content) {
+      // 修改接口
       patchaddArea({
         CustomerAddrId: content.customerAddrId,
         CustomerId: content.customerId,
@@ -76,7 +84,9 @@ export default {
         IdDel: content.tel,
       }).then((res) => {
         console.log(res);
+        // 当修改成功时
         if (res.code == 201) {
+          // 创建接口
           postaddArea({
             Name: content.name,
             Phone: content.tel,
@@ -96,6 +106,7 @@ export default {
       });
     },
     onClickLeft() {
+      // 返回收获地址页面
       this.$router.push("/ship");
     },
     //  删除订单
@@ -109,8 +120,10 @@ export default {
       }).then((res) => {
         console.log(res);
         if(res.code == 201){
+          // 删除成功时跳转路由
           this.$router.push('/ship')
         }else{
+          // 弹出错误信息
           Notify({ type: 'danger', message: res.msg });
         }
       });

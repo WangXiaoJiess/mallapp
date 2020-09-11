@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- 详情滚动导航 -->
     <van-icon class="detail_icon" name="arrow-left" @click="oneClick('/home')" />
     <van-tabs v-model="active" scrollspy sticky>
       <van-tab title="商品">
@@ -27,7 +28,7 @@
         <div class="comment">
           <div class="comment_title">
             <div>买家评论{{comment.length}}</div>
-            <div>更多></div>
+            <div @click="onmore">更多></div>
           </div>
           <div v-for="(item,index) in comment" :key="index">
             <div class="comment_top">
@@ -109,12 +110,14 @@
 </template>
 
 <script>
+// 引入axios接口
 import {
   getGoodsInfo,
   getShowGoods,
   getCart,
   postaddCart,
 } from "../../api/api";
+// 引入商品组件
 import CartList from "../../components/CartList";
 export default {
   metaInfo: {
@@ -130,18 +133,22 @@ export default {
       ShowGoods: [],
     };
   },
-  computed:{
-    num:function(){
-      return this.$store.state.CartList
-    }
+  computed: {
+    // 计算vuex中购物车数组的长度
+    num: function () {
+      return this.$store.state.CartList;
+    },
   },
+  // 注册组件
   components: {
     CartList,
   },
-  mounted() {
-    if(!this.$route.query.id){
-      this.$route.query.id = this.$store.state.id
+  // 初始化
+  created() {
+    if (!this.$route.query.id) {
+      this.$route.query.id = this.$store.state.id;
     }
+    // 获取详情数据
     getGoodsInfo({ goodsId: this.$route.query.id }).then((res) => {
       console.log(res);
       this.goods = res.data[0];
@@ -154,6 +161,7 @@ export default {
         }
       });
     });
+    // 获取商品数据
     getShowGoods({ page: 1, sortType: "new" })
       .then((res) => {
         // console.log(res.data);
@@ -165,21 +173,24 @@ export default {
       });
   },
   methods: {
+    // 到购物车路由
     gotoCart() {
       this.$router.push("/cart");
     },
+    // 返回到上一级路由
     oneClick(path) {
-      this.$router.push(path);
+      window.history.back()
     },
     onClick(item) {
       // console.log(item)
       this.$router.push({
         path: "/detail",
         query: {
-          id:item.goodsId
+          id: item.goodsId,
         },
       });
     },
+    // 加入购物车
     addCart() {
       postaddCart({
         product_id: this.goods.goodsId,
@@ -187,9 +198,18 @@ export default {
         price: this.goods.goodsPrice,
       }).then((res) => {
         console.log(res);
-      })
-
+      });
       this.$store.dispatch("setCartList");
+    },
+    // 去评论页
+    onmore() {
+      // console.log(this.goods.goodsId)
+      this.$router.push({
+        path: "/rate",
+        query: {
+          id: this.goods.goodsId,
+        },
+      });
     },
   },
   filters: {

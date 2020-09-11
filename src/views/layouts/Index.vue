@@ -1,9 +1,12 @@
 <template>
   <div>
+    <!-- 为true时缓存组件 -->
     <keep-alive v-if="$route.meta.keepAlive">
       <router-view></router-view>
     </keep-alive>
+    <!-- 为false时不缓存组件 -->
     <router-view v-else></router-view>
+    <!-- 为true时显示底部导航 -->
     <div v-if="$route.meta.isshow">
       <div class="hidder"></div>
       <van-tabbar v-model="active" route>

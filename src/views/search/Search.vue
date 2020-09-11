@@ -20,12 +20,12 @@
     <div v-show="isShow">
       <h4>全网搜索</h4>
       <div class="SearchHot">
-        <div v-for="(item,index) in SearchHot" :key="index">{{item}}</div>
+        <div v-for="(item,index) in SearchHot" @click="onHot(item)" :key="index">{{item}}</div>
       </div>
 
       <div v-show="history.length>0">
         <van-divider :style="{ color: '#1989fa', borderColor: '#1989fa', padding: '0 16px' }">搜索历史</van-divider>
-        <van-cell v-for="(item,index) in history" :key="index" :title="item">
+        <van-cell v-for="(item,index) in history" :key="index" @click="onhistory(item)" :title="item">
           <template #right-icon>
             <van-icon name="cross" @click="onClick(index)" />
           </template>
@@ -54,7 +54,12 @@
         @load="onLoad"
       >
         <div class="Search_List">
-          <CartList v-for="(item,index) in SearchList" :key="index" :ListItem="item" />
+          <CartList
+            v-for="(item,index) in SearchList"
+            :key="index"
+            @onClick="onClick"
+            :ListItem="item"
+          />
         </div>
       </van-list>
     </div>
@@ -63,6 +68,7 @@
 </template>
 
 <script>
+import { Dialog } from "vant";
 import { getSearchHot, getGoods } from "../../api/api";
 import CartList from "../../components/CartList";
 export default {
@@ -73,9 +79,9 @@ export default {
     return {
       allindex: 0,
       value: "",
-      SearchHot: [],
-      history: [],
-      SearchList: [],
+      SearchHot: [], // 热搜词数组
+      history: [], // 历史记录搜索
+      SearchList: [], // 搜索商品数组
       isShow: true,
       SearchListTitle: [
         {
@@ -100,40 +106,86 @@ export default {
   components: {
     CartList,
   },
+  // 初始化
+  created() {
+    getSearchHot().then((res) => {
+      this.SearchHot = [...res.data];
+    });
+    let a = localStorage.history;
+    if (a) {
+      this.history = JSON.parse(a);
+    }
+  },
   methods: {
+    // 返回上一级路由
     onClickLeft() {
-      this.$router.push(this.$store.state.path);
+      window.history.back();
     },
+    // 热搜词搜索
+    onHot(item) {
+      // console.log(item);
+      this.value = item;
+      this.onSearch();
+    },
+    // 历史搜索事件
+    onhistory(item){
+      // console.log(item)
+      this.value = item;
+      this.onSearch();
+    },
+    // 搜索事件
     onSearch() {
-      let a = true
-      this.history.forEach((element)=>{
-        if(element == this.value){
-          a = false
+      let a = true;
+      for (var i = 0; i < this.history.length; i++) {
+        if (this.history[i] === this.value) {
+          this.history.splice(i, 1); // 如果数据组存在该元素，则把该元素删除
+          let a = false;
         }
-      })
-      if(a){
+      }
+      if (a) {
         this.history.unshift(this.value);
       }
+      // 以上是去重
       getGoods({ goodsName: this.value }).then((res) => {
-        // console.log(res.data);
         this.SearchList = [...res.data];
       });
+      // 获取商品数据
       this.isShow = false;
+      // 显示在页面上
+      this.save();
+      // 调用保存到本地事件
     },
     onClick(index) {
       this.history.splice(index, 1);
+      // 删除
+      this.save();
+      // 调用保存到本地事件
     },
+    // 清空事件
     del() {
-      this.history = [];
+      Dialog.confirm({
+        title: "",
+        message: "你确定要删除吗",
+      })
+        .then(() => {
+          this.history = [];
+        })
+        .catch(() => {
+          // on cancel
+        });
+      this.save();
     },
+    // 获取焦点事件
     onfocus() {
       if (this.isShow == false) {
         this.isShow = true;
       }
     },
+    // 商品头部
     onClick_ListTitle(index) {
       this.allindex = index;
     },
+    // 上拉加载
     onLoad() {
       getGoods({
         page: this.page,
@@ -154,12 +206,19 @@ export default {
         this.finished = true;
       }
     },
-  },
-  mounted() {
-    getSearchHot().then((res) => {
-      // console.log(res.data)
-      this.SearchHot = [...res.data];
-    });
+    // 保存到本地事件
+    save() {
+      localStorage.history = JSON.stringify(this.history);
+    },
+    onClick(item) {
+      // console.log(item)
+      this.$router.push({
+        path: "/detail",
+        query: {
+          id: item.goodsId,
+        },
+      });
+    },
   },
 };
 </script>
@@ -198,7 +257,7 @@ export default {
   color: red;
   border-bottom: 4px solid red;
 }
-.hidder{
+.hidder {
   height: 80px;
 }
 </style>

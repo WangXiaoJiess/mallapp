@@ -95,8 +95,7 @@ export default {
       return this.$store.state.CartList;
     },
   },
-  mounted() {
-    // console.log(this.$route.query.index)
+  created() {
     this.CartList.forEach((element) => {
       if (element.ischecked == true) {
         this.buyList.push(element);
@@ -170,7 +169,7 @@ export default {
         this.$router.push({
           path: "/payOrder",
           query: {
-            order:res.data
+            order: res.data,
           },
         });
       });
@@ -201,6 +200,7 @@ export default {
 }
 .buyGoods_main {
   border-bottom: 20px solid rgb(224, 222, 222);
+  padding: 0px 20px;
   .main_title {
     display: flex;
     justify-content: flex-start;
@@ -218,6 +218,8 @@ export default {
     align-items: center;
     color: #666;
     img {
+      width: 230px;
+      height: 220px;
       border-radius: 20px;
     }
     .goods_title {

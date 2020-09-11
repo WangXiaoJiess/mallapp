@@ -27,6 +27,7 @@ const api = {
     appWebPay: '/api/Alipay/appWebPay', // 手机网页支付
     OrderByState: '/api/Order/getOrderByState', // 展示订单信息，包含商品信息和店铺信息
     deleteArea: '/api/UserInfo/deleteArea', // 修改用户地址为删除状态
+    AllRateByGoodsId: '/api/Comment/getAllRateByGoodsId', // 根据商品id找到该商品所有的评论
 }
 
 module.exports = api 

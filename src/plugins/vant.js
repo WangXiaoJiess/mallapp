@@ -8,8 +8,8 @@ import {
     Grid, GridItem,GoodsAction, GoodsActionIcon, GoodsActionButton,
     SubmitBar ,Checkbox ,Card ,CheckboxGroup,Stepper ,
     AddressEdit ,Area , Dialog ,AddressList ,
-    RadioGroup, Radio,PasswordInput, NumberKeyboard
-
+    RadioGroup, Radio,PasswordInput, NumberKeyboard,
+    Rate 
 } from 'vant'
 Vue.use(Button)
 Vue.use(Tabbar);
@@ -51,3 +51,4 @@ Vue.use(Radio);
 Vue.use(RadioGroup);
 Vue.use(PasswordInput);
 Vue.use(NumberKeyboard);
+Vue.use(Rate);

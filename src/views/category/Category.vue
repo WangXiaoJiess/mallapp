@@ -1,9 +1,7 @@
 <template>
   <div>
-    <van-sticky>
-      <van-nav-bar :title="$route.meta.title" />
-      <van-search @focus="goto('/search')" class="search" placeholder="请输入需要搜索的商品" />
-    </van-sticky>
+    <van-nav-bar :title="$route.meta.title" />
+    <van-search @focus="goto('/search')" class="search" placeholder="请输入需要搜索的商品" />
     <van-row>
       <van-col span="5">
         <van-sidebar v-model="activeKey">
@@ -35,7 +33,12 @@
           >
             <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
               <div class="category_List">
-                <CartList v-for="(item,index) in TwoList" :key="index" :ListItem="item" @onClick="onClick" />
+                <CartList
+                  v-for="(item,index) in TwoList"
+                  :key="index"
+                  :ListItem="item"
+                  @onClick="onClick"
+                />
               </div>
             </van-pull-refresh>
           </van-list>
@@ -123,7 +126,7 @@ export default {
       this.$router.push({
         path: "/detail",
         query: {
-          id:item.goodsId
+          id: item.goodsId,
         },
       });
     },

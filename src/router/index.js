@@ -112,6 +112,12 @@ const routes = [
     component: () => import('@/views/order/Order'),
     meta: { title: '我的订单', keepAlive: false }
   },
+  {
+    path: '/rate',
+    name: 'Rate',
+    component: () => import('@/views/rate/Rate'),
+    meta: { title: '所有评价', keepAlive: false }
+  },
 ]
 
 const router = new VueRouter({

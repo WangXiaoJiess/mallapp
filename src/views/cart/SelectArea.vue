@@ -33,9 +33,9 @@ export default {
       index: 0,
     };
   },
-  mounted() {
+  created() {
     getArea().then((res) => {
-      console.log(res.data);
+      // console.log(res.data);
       this.list = res.data;
     });
   },

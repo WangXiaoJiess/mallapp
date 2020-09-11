@@ -1,6 +1,7 @@
 import {
   homeList, ShowGoods, SearchHot,Goods, CatsTree, CadGoods, GoodsInfo,Phone, LoginName, Code, login, Login,UserData, Cart, addCart, DeleteCart,
   CartNum, pathCartChecked, OrderInfo,addArea, Area, patchArea, cretaeOrder,verifyPayPWD, payOrder, appWebPay, OrderByState,deleteArea,
+  AllRateByGoodsId
   
 } from './index'
 // axios
@@ -263,6 +264,16 @@ export function patchdeleteArea(params = {}) {
   return request({
     url: deleteArea,
     method: 'patch',
+    params,
+    hideloading: false
+  })
+}
+
+// 根据商品id找到该商品所有的评论
+export function getAllRateByGoodsId(params = {}) {
+  return request({
+    url: AllRateByGoodsId,
+    method: 'get',
     params,
     hideloading: false
   })

@@ -10,36 +10,47 @@ export default new Vuex.Store({
     storage: window.localStorage
   })],
   state: {
-    token: "",
+    token: "", // 响应头
     path: '', // 路由对象
     CartList: [],  // 购物车列表
     totle: 0, // 购物车总价
     checked: false,  // 购物车全选按钮
-    id: 0,
+    id: 0, // 详情id
     OrderList: [], // 订单列表
     signindex: 0, // 我的页面  签到
+    history: [], // 搜索历史记录
   },
   mutations: {
+    // 获取响应头
     setToken(state, val) {
       state.token = val;
     },
+    // 获取  我的页面  签到
     setsignindex(state, newsignindex) {
       state.signindex = newsignindex
     },
+    // 获取路由对象
     setpath(state, newpath) {
       state.path = newpath
     },
+    // 获取详情id
     setid(state, newid) {
       state.id = newid
     },
+    // 获取订单列表
     setOrderList(state, newOrderList) {
       state.OrderList = newOrderList
     },
+    // 获取购物车数据
     setCartList(state) {
       getCart({ pageSize: '30' }).then((res) => {
         console.log(res.data);
-        res.data.pop()
+        var index = res.data.length - 1
+        if (res.data[index] == null) {
+          res.data.pop()
+        }
         state.CartList = res.data;
+        // 总价
         state.totle = 0
         state.CartList.forEach(element => {
           if (element.ischecked == true) {
@@ -48,6 +59,7 @@ export default new Vuex.Store({
         })
       });
     },
+    // 购物车总价事件
     settotle(state) {
       state.totle = 0
       state.CartList.forEach(element => {
@@ -56,6 +68,7 @@ export default new Vuex.Store({
         }
       })
     },
+    // 购物车删除事件
     setdel(state) {
       var a = []
       state.CartList.forEach(element => {
@@ -68,11 +81,11 @@ export default new Vuex.Store({
       patchDeleteCart({ carid: str }).then(res => {
         console.log(res)
       })
+      // 请求购物车数据
       getCart({ pageSize: '30' }).then((res) => {
         // console.log(res.data);
-        var index = res.data.length - 1
-        res.data.splice(index, 1)
         state.CartList = res.data;
+        // 总价
         state.totle = 0
         state.CartList.forEach(element => {
           if (element.ischecked == true) {
@@ -82,13 +95,16 @@ export default new Vuex.Store({
         })
       });
     },
+    // 购物车全选按钮事件
     setchecked(state) {
       state.checked = !state.checked
       state.CartList.forEach((element) => {
         element.ischecked = state.checked;
       });
     },
+    // 购物车单选按钮事件
     setchange(state) {
+      // 当数组中数据全部为true就为true，当数组中数据全部为false就为false，
       if (
         state.CartList.findIndex((target) => target.ischecked === false) == -1
       ) {
